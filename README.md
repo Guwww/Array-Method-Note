@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>数组方法</title>
+
+<script>
+
+
+var arr1 = new Array(); //创建一个空数组
+var arr2 = new Array(20); // 创建一个包含20项的数组 [数组里元素都是空]
+var arr3 = new Array("lily","lucy","Tom"); // 创建一个包含3个字符串的数组
+
+join()
+push()和pop()
+shift() 和 unshift()
+sort()
+reverse()
+concat()
+slice()
+splice()
+indexOf()和 lastIndexOf() （ES5新增）
+forEach() （ES5新增）
+map() （ES5新增）
+filter() （ES5新增）
+every() （ES5新增）
+some() （ES5新增）
+reduce()和 reduceRight() （ES5新增）
+
+
+join();// 将数组的元素组起一个字符串
+
+push()  尾部添加， unshift() 头部添加  pop() 尾部删除 shift() 头部删除
+
+sort();  //在排序时，sort()方法会调用每个数组项的 toString()转型方法，然后比较得到的字符串，以确定如何排序。即使数组中的每一项都是数值， sort()方法比较的也是字符串.
+    sort方法的数组排序。
+    let arr = [3,9,1,3,4,6,5];
+    arr.sort(function(a,b){
+        return a-b;  //小到大，  b-a 大到小
+    });
+    console.log(arr); 
+
+
+reverse();  //反转数组项的顺序。
+    var arr = [13, 24, 51, 3];
+    console.log(arr.reverse()); //[3, 51, 24, 13]
+    console.log(arr); //[3, 51, 24, 13](原数组改变)
+
+
+
+concat(); // 将参数添加到原数组中。这个方法会先创建当前数组一个副本，然后将接收到的参数添加到这个副本的末尾，最后返回新构建的数组。在没有给 concat()方法传递参数的情况下，它只是复制当前数组并返回副本。
+    var arr = [1,3,5,7];
+    var arrCopy = arr.concat(9,[11,13]);
+    console.log(arrCopy); //[1, 3, 5, 7, 9, 11, 13]
+    console.log(arr); // [1, 3, 5, 7](原数组未被修改)
+
+
+Array.slice(); 返回从原数组中指定开始下标到结束下标之间的项组成的新数组
+var arr = [1,3,5,7,9,11];
+    console.log(arr.slice(1));  //[3,,5,7,9,11] 
+    console.log(arr.slice(1,4));  //[3,5,7] //不包括结束位置
+    console.log(arr.slice(1,-2)); //[3,5,7]
+    console.log(arr.slice(-1,2));  //相当于(5,2)为空
+
+    arrCopy3设置了两个参数，终止下标为负数，当出现负数时，将负数加上数组长度的值（6）来替换该位置的数，因此就是从1开始到4（不包括）的子数组。 
+    arrCopy4中两个参数都是负数，所以都加上数组长度6转换成正数，因此相当于slice(2,5)。
+
+
+
+
+Array.splice();// 删除，替换，添加。
+    let arr = [1,3,5,7,9];
+    console.log(arr.splice(1,2),arr);[3,5],[1,7,9] //删除  1参数是起始位置，2参数是删除个数。
+    console.log(arr.splice(1,1,'你好'),arr);[3],[1,'你好',5,7,9]  //替换  1参数是起始位置，2参数是删除个数，3参数是替换项。
+    console.log(arr.splice(1,0,'你好','我好'),arr);[],[1,'你好','我好',3,5,7,9]   //添加  1参数是起始位置，0参数是删除个数，3参数是插入项。
+
+
+
+Array.indexOf()： indexOf不能判断NaN
+        接收两个参数：要查找的项和（可选的）表示查找起点位置的索引。其中， 从数组的开头（位置 0）开始向后查找。 
+Array.lastIndexOf：
+        接收两个参数：要查找的项和（可选的）表示查找起点位置的索引。其中， 从数组的末尾开始向前查找。    
+        var arr = [1,3,5,7,9,11];
+        console.log(arr.indexOf(5)); //没有匹配到就返回-1,匹配到就返回匹配值的位置。
+
+Array.inculudes:作用等同indexOf();
+    1.看函数的返回值：indexOf返回的是数值型的而includes返回的是布尔型的
+    2.都可以支持第二参数，而且的第二个参数都支持负数形式
+    3.数组中的indexOf不能判断数组中是否有NaN而includes可以.
+    var arr = [NaN];
+    console.log(arr.indexOf(NaN)); //-1  不能判断NaN
+    console.log(arr.includes(NaN)); //true  可以判断NaN
+
+    var arr1 = [,,]; //稀疏数组  indexOf 认为稀疏数组，省略掉的值是不存在的，但 includes 认为是undefined
+    console.log(arr.indexOf(undefined)); // -1
+    console.log(arr.includes(undefined)); // true
+
+
+
+Array.forEach()  Array.map() 
+     共同点：
+         1.都是循环遍历数组中的每一项。
+         2.forEach() 和 map() 里面每一次执行匿名函数都支持3个参数：数组中的当前项item,当前项的索引index,原始数组input。
+         3.匿名函数中的this都是指Window。
+         4.只能遍历数组。
+
+Array.forEach() => 没有返回值 
+Array.map()     => 有返回值，可以return出来   
+    var ary = [12,23,24,42,1];
+    var res = ary.forEach(function (item,index,input) {
+        input[index] = item*10;
+    })
+    console.log(res);   //-->undefined;
+    console.log(ary);   //-->会对原来的数组产生改变；
+
+    var ary = [12,23,24,42,1];
+    var res = ary.map(function (item,index,input) {
+    ? ? return item*10;
+    })
+    console.log(res);   //-->[120,230,240,420,10];
+    console.log(ary);   //-->[12,23,24,42,1];
+
+
+
+Array.filter()  “过滤”功能，数组中的每一项运行给定函数，返回满足过滤条件组成的数组。
+    var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var arr2 = arr.filter(function(x, index) {
+        console.log(x,index); //x是数组中每一项，index是对应的下标
+        return index % 3 === 0 || x >= 8;
+    }); 
+    console.log(arr2); //[1, 4, 7, 8, 9, 10];
+
+
+
+Array.every()   判断数组中每一项都是否满足条件，只有所有项都满足条件，才会返回true。
+
+    var arr = [1, 2, 3, 4, 5];
+    var arr2 = arr.every(function(x) {
+        return x < 10;
+    }); 
+        console.log(arr2); //true
+
+    var arr3 = arr.every(function(x) {
+        return x < 3;
+    }); 
+        console.log(arr3); // false
+
+
+
+
+Array.some()  判断数组中是否存在满足条件的项，只要有一项满足条件，就会返回true。
+
+    var arr = [1, 2, 3, 4, 5];
+    var arr2 = arr.some(function(x) {
+        return x < 3;
+    }); 
+        console.log(arr2); //true
+
+    var arr3 = arr.some(function(x) {
+        return x < 1;
+    }); 
+        console.log(arr3); // false
+
+
+
+
+
+Array.reduce() 
+1.语法： arr.reduce(callback,[initialValue]);  /为数组中每个元素都执行回调函数。
+callback接受4个参数（执行数组中每个值的函数，包含四个参数）
+    1、previousValue （上一次调用回调返回的值，或者是提供的初始值（initialValue））
+    2、currentValue （数组中当前被处理的元素）
+    3、index （当前元素在数组中的索引）
+    4、array （调用 reduce 的数组）
+    示例：
+    let arr = [1,2,3,4,5];
+    简单用法
+    let sum = arr.reduce((prev,cur)=>{
+        return prev + cur;
+    },0);   //算术运算符时，初始initialValue是数字0  
+    console.log(sum,arr);
+    let sum = arr.reduce((prev,cur) => prev+cur);
+    console.log(sum,arr);
+
+    高级用法：
+    1.数组去重
+    let arr = [1,2,3,4,4,1];
+    let newArr = arr.reduce((pre,cur)=>{
+        if(!pre.includes(cur)){
+            return pre.concat(cur);
+        }else{
+            return pre;
+        }
+    },[]);  //数组操作时，初始initialValue是空数组，对象操作时，是空对象。
+    console.log(newArr);
+
+    2.二维数组扁平化
+    let arr = [[1,2],3,4,[5,6]];
+    let newArr= arr.reduce((pre,cur)=>{
+        return pre.concat(cur);
+    },[]);
+    console.log(newArr,arr);
+
+    3.多维数组扁平化
+    let arr=[[1,2],[3,[4,5],6,[7,8]],9];
+    let newArr = (arr)=>{
+        return arr.reduce( (pre,cur)=> pre.concat( Array.isArray(cur)?newArr(cur):cur ),[] );   //箭头函数不用{}包裹就是直接携带return操作
+    };
+    let newArr = (arr)=>{
+        return arr.reduce((pre,cur)=>{
+            return pre.concat(Array.isArray(cur) ? newArr(cur):cur)
+        },[]);
+    }
+    console.log(newArr(arr));
+
+    4.数组去重
+    let arr = [1,2,3,4,4,1];
+    let newArr = arr.reduce((pre,cur) => {
+        if( !pre.includes(cur) ){
+            return pre.concat(cur);
+        }else{
+            return pre;
+        }
+    },[]);
+    console.log(newArr);
+
+
+    5.计算数组中每个元素出现的次数。
+    let arr = [1,2,3,4,4,1];
+    let newArr = arr.reduce( (pre,cur)=>{
+        if(cur in pre ){
+            pre[cur]++;
+        }else{
+            pre[cur]=1;
+        }
+        return pre;
+    }, {} );
+    console.log(newArr);
+
+    6.对象里属性求和
+    let result = [
+        {
+            subject: 'math',
+            score: 10
+        },
+        {
+            subject: 'chinese',
+            score: 20
+        },
+        {
+            subject: 'english',
+            score: 30
+        }
+    ];
+
+    var sum = result.reduce(function(pre,cur){
+        return cur.score+ pre;
+    },0); 
+    console.log(sum);
+
+
+
+字符串的indexOf和数组中的indexOf的比较
+    1.这两个方法都可以接收两个参数
+    2.这两个方法在没有查找的指定的字符都返回-1
+    3.字符串中的indexOf中的第二个参数不支持负数而数组的indexOf支持
+    4.字符串的indexOf在传入参数不是字符串的情况下默认会转换为字符串而数组的indexOf不会进行数据类的转换
+
+字符串的includes和数组中的includes的比较
+    1.这两个方法都可以接收两个参数
+    2.这两个方法在没有查找的指定的字符都返回false
+    3.字符串中的includes中的第二个参数不支持负数而数组的includes支持
+    4.字符串的includes在传入参数不是字符串的情况下默认会转换为字符串而数组的includes不会进行数据类的转换
+
+字符串的slice和数组中的slice的比较
+    1.在不传入任何参数的情况下都是把原来的值拷贝一份
+    2.字符串的slice的第二个参数是不支持负数的而数组的可以
+    3.都可以接收两个参数
+
+
+
+</script>
+</head>
+
+<body>
+</body>
+</html>
